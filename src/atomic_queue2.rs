@@ -155,7 +155,7 @@ impl<T, const SIZE: usize,
         } else {
             // Full MPMC implementation
             loop {
-                if state.compare_exchange(EMPTY, FULL, ordering::A, ordering::R).is_ok() {
+                if state.compare_exchange(EMPTY, FULL, ordering::A, ordering::X).is_ok() {
                     // Store the element
                     unsafe { ptr::write(element as *mut T, value.into()) };
                     return;
@@ -469,7 +469,7 @@ impl<T, const MAXIMIZE_THROUGHPUT: bool, const TOTAL_ORDER: bool, const SPSC: bo
         } else {
             // Full MPMC implementation
             loop {
-                if state.compare_exchange(EMPTY, FULL, ordering::A, ordering::R).is_ok() {
+                if state.compare_exchange(EMPTY, FULL, ordering::A, ordering::X).is_ok() {
                     // Store the element
                     unsafe { ptr::write(element as *mut T, value.into()) };
                     return;
