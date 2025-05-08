@@ -1,0 +1,31 @@
+[package]
+name = "atomic_queue_rs"
+version = "0.1.0"
+edition = "2021"
+authors = ["Disant Upadhyay"]
+description = "Lock-free MPMC queues based on circular buffers and atomic operations"
+license = "MIT"
+repository = "https://github.com/disantupadhyay/atomic_queue_rs"
+readme = "README.md"
+keywords = ["queue", "lock-free", "mpmc", "concurrent", "atomic"]
+categories = ["concurrency", "data-structures"]
+
+[dependencies]
+crossbeam-utils = "0.8"
+
+[dev-dependencies]
+criterion = "0.5"
+rand = "0.9.1"
+num_cpus = "1.16"
+
+[features]
+default = []
+bench = []
+
+[[bench]]
+name = "throughput"
+harness = false
+
+[[bench]]
+name = "latency"
+harness = false
