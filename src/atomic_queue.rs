@@ -279,7 +279,7 @@ impl<T: Element> AtomicQueueB<T> {
         unsafe {
             let element = self.elements.add(idx);
             // Access the AtomicValue inside the CachePadded<AtomicValue>
-            &*(*element).deref()
+            (*element).deref()
         }
     }
 }
@@ -403,10 +403,10 @@ impl<T: Element> AtomicQueueOps<T> for AtomicQueueB<T> {
 }
 
 /// A faster version of AtomicQueue that busy-waits when empty or full
-pub type OptimistAtomicQueue<T: Element, const SIZE: usize> = AtomicQueue<T, SIZE>;
+pub type OptimistAtomicQueue<T, const SIZE: usize> = AtomicQueue<T, SIZE>;
 
 /// A faster version of AtomicQueueB that busy-waits when empty or full
-pub type OptimistAtomicQueueB<T: Element> = AtomicQueueB<T>;
+pub type OptimistAtomicQueueB<T> = AtomicQueueB<T>;
 
 #[cfg(test)]
 mod tests {

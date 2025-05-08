@@ -409,7 +409,7 @@ impl<T, const MAXIMIZE_THROUGHPUT: bool, const TOTAL_ORDER: bool, const SPSC: bo
     fn get_slot(&self, index: usize) -> (&AtomicU8, *mut MaybeUninit<T>) {
         let remapped_index = remap_index(index & (self.capacity - 1), self.shuffle_bits);
         unsafe {
-            let state = &*(*self.states.add(remapped_index)).deref();
+            let state = (*self.states.add(remapped_index)).deref();
             let element = self.elements.add(remapped_index);
             (state, element)
         }
@@ -492,7 +492,7 @@ impl<T, const MAXIMIZE_THROUGHPUT: bool, const TOTAL_ORDER: bool, const SPSC: bo
             // Drop any remaining elements in the queue
             for i in 0..self.capacity {
                 let remapped_index = remap_index(i & (self.capacity - 1), self.shuffle_bits);
-                let state = &*(*self.states.add(remapped_index)).deref();
+                let state = (*self.states.add(remapped_index)).deref();
                 
                 if state.load(Ordering::Relaxed) == FULL {
                     // Drop the element if it's full

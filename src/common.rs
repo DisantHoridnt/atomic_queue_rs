@@ -140,7 +140,7 @@ pub trait AtomicQueueOps<T> {
 pub trait OptimistAtomicQueueOps<T: Clone>: AtomicQueueOps<T> {
     /// Pushes an element to the queue, busy-waiting if the queue is full
     fn optimist_push(&self, element: T) {
-        let mut element = element;
+        let element = element;
         while !self.try_push(element.clone()) {
             spin_loop_pause();
         }
