@@ -15,6 +15,8 @@ pub mod atomic_queue2;
 // Re-exports for convenience
 pub use atomic_queue::{AtomicQueue, AtomicQueueB, OptimistAtomicQueue, OptimistAtomicQueueB};
 pub use atomic_queue2::{AtomicQueue2, AtomicQueueB2, OptimistAtomicQueue2, OptimistAtomicQueueB2};
+// Export the trait for testing
+pub use common::AtomicQueueOps;
 
 /// Trait for elements that can be stored in an atomic queue
 pub trait Element: Copy + Default + PartialEq + Send + Sync + 'static {}
@@ -30,6 +32,9 @@ impl Element for i16 {}
 impl Element for i32 {}
 impl Element for i64 {}
 impl Element for isize {}
+
+// Box<T> cannot implement Element because Box doesn't implement Copy
+// For Box support, use more specialized test approaches
 
 // Note: We don't implement for raw pointers as they don't implement Default
 

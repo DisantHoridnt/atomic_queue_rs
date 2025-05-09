@@ -10,6 +10,9 @@ use std::ops::Deref;
 use std::ptr;
 use std::sync::atomic::{AtomicU8, Ordering};
 
+// Type alias to simplify the complex phantom data type
+type QueueState<T> = (Box<[CachePadded<AtomicU8>]>, Box<[T]>);
+
 use crossbeam_utils::CachePadded;
 
 use crate::arch::{CACHE_LINE_SIZE, spin_loop_pause, round_up_to_power_of_2, get_index_shuffle_bits, remap_index};
@@ -335,7 +338,7 @@ pub struct AtomicQueueB2<T,
     shuffle_bits: usize,
     
     /// Marker for variance and drop check
-    _marker: PhantomData<(Box<[CachePadded<AtomicU8>]>, Box<[T]>)>,
+    _marker: PhantomData<QueueState<T>>,
 }
 
 // Safety: AtomicQueueB2<T> is internally synchronized, so it's safe to share references
